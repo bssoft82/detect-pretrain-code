@@ -42,9 +42,10 @@ def calculatePerplexity_gpt3(prompt, modelname):
     OPENAI_API_KEY = "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" # YOUR_API_KEY
     os.environ['OPENAI_API_KEY'] = "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"
     OpenAIEmbeddings(model="gpt-3.5-turbo")
+    i = 0
     while responses is None:
         #try:
-            prompt = prompt[:31]
+            prompt = prompt[:255]
             responses = openai.Completion.create(
                         #engine=modelname,
                         model="gpt-3.5-turbo-instruct",
@@ -53,6 +54,8 @@ def calculatePerplexity_gpt3(prompt, modelname):
                         temperature=1.0,
                         logprobs=5,
                         echo=True)
+            print (f'{i}: responses: {responses} ')
+            i += 1
         #except openai.error.InvalidRequestError:
         #    print(f'run.py:calculatePerplexity_gpt3 {prompt} too long for openai API')
     data = responses["choices"][0]["logprobs"]

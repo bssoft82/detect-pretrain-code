@@ -38,9 +38,9 @@ def calculatePerplexity_gpt3(prompt, modelname):
     prompt = prompt.replace('\x00','')
     responses = None
     # Put your API key here
-    openai.api_key = "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" # YOUR_API_KEY
-    OPENAI_API_KEY = "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" # YOUR_API_KEY
-    os.environ['OPENAI_API_KEY'] = "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"
+    openai.api_key = "key" # YOUR_API_KEY
+    OPENAI_API_KEY = "key" # YOUR_API_KEY
+    os.environ['OPENAI_API_KEY'] = "key"
     OpenAIEmbeddings(model="gpt-3.5-turbo")
     i = 0
     while responses is None:

@@ -5,6 +5,9 @@ from pathlib import Path
 import openai
 import torch
 import zlib
+import os
+
+from langchain.embeddings.openai import OpenAIEmbeddings
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from tqdm import tqdm
 import numpy as np
@@ -35,18 +38,23 @@ def calculatePerplexity_gpt3(prompt, modelname):
     prompt = prompt.replace('\x00','')
     responses = None
     # Put your API key here
-    openai.api_key = "YOUR_API_KEY" # YOUR_API_KEY
+    openai.api_key = "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" # YOUR_API_KEY
+    OPENAI_API_KEY = "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" # YOUR_API_KEY
+    os.environ['OPENAI_API_KEY'] = "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"
+    OpenAIEmbeddings(model="gpt-3.5-turbo")
     while responses is None:
-        try:
+        #try:
+            prompt = prompt[:31]
             responses = openai.Completion.create(
-                        engine=modelname, 
+                        #engine=modelname,
+                        model="gpt-3.5-turbo-instruct",
                         prompt=prompt,
                         max_tokens=0,
                         temperature=1.0,
                         logprobs=5,
                         echo=True)
-        except openai.error.InvalidRequestError:
-            print("too long for openai API")
+        #except openai.error.InvalidRequestError:
+        #    print(f'run.py:calculatePerplexity_gpt3 {prompt} too long for openai API')
     data = responses["choices"][0]["logprobs"]
     all_prob = [d for d in data["token_logprobs"] if d is not None]
     p1 = np.exp(-np.mean(all_prob))
